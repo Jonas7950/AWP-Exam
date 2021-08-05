@@ -9,7 +9,7 @@ function Auction(props) {
 
     function onSubmit() {
         
-        
+        if (auction.bids.length != 0)
         if (bid <= auction.bids[auction.bids.length - 1].amount){
             console.log(bid + " " + auction.bids[auction.bids.length - 1]);
             alert("you need to bid higher then the current highest bid");
