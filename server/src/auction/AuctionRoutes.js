@@ -33,7 +33,7 @@ module.exports = (auctionDB, secret) => {
 
   //route for creating an auction
   router.post('/post/create', async (req, res) => {
-    const post = await auctionDB.createAuction(req.body.title, req.body.description, req.body.seller, 48)
+    const post = await auctionDB.createAuction(req.body.title, req.body.description, req.body.seller, req.body.deadline)
       .then(data => {
         console.log("posted perfectly fine")
         res.json(post)

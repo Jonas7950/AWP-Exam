@@ -80,7 +80,6 @@ module.exports = (mongoose) => {
   }
 
   //creating an auction and storing it
-  //the deadline is the current time plus 24 hours
   async function createAuction(Title, Description, Seller, hourDuration) {
     
     let auction = new auctionModel({
@@ -91,10 +90,10 @@ module.exports = (mongoose) => {
       deadline: new Date(+new Date() + 1000*60*60*hourDuration),
       bids:[]
     });
-    
     return auction.save();
   }
 
+  //find the correct auction to add the bid to, then add the bid
   async function createBid(id, Amount, Bidder){
     let parentAuction = await auctionModel.findById(id);
     let bid = {amount:Amount, bidder: Bidder, subDate: new Date()};
@@ -103,6 +102,8 @@ module.exports = (mongoose) => {
     return parentAuction.save();
   }
 
+  //provide the API with dummy data if the database is empty
+  //creates 4 accounts and 50 auctions with 3 bids on them each. all users are randomized
   async function bootstrap(count = 50) {
 
     let l = (await getAuctions()).length;

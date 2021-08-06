@@ -1,5 +1,6 @@
 import {Link} from '@reach/router';
 
+//figure out wether to render the highest current bid on the auction or to render the string "None", if there are no active bids
 function HighestBid(auction){
     if (auction.length < 1)
         return "None";
@@ -8,9 +9,7 @@ function HighestBid(auction){
 }
 
 function Auctions(props) {
-
   const {data} = props;
-
   return (
     <>
     <p>Auctions go here:</p>
@@ -27,7 +26,6 @@ function Auctions(props) {
                 {auction.seller} - {auction.subDate} <br/>
                 largest bid: {HighestBid(auction.bids)}
             </ol>
-
           </li>)}
       </ol>
       

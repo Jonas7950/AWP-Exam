@@ -7,8 +7,8 @@ function Auction(props) {
 
     const [bid, setBid] = useState("");
 
+    //adds a bid to the auction, but only if the entered amount is higher then the previous bid
     function onSubmit() {
-        
         if (auction.bids.length != 0)
         if (bid <= auction.bids[auction.bids.length - 1].amount){
             console.log(bid + " " + auction.bids[auction.bids.length - 1]);
@@ -18,12 +18,14 @@ function Auction(props) {
       addBid(id, bid);
     }
 
+    //render this if the URL doesnt contain a valid id
     if (auction === undefined)
     {
-      return <p>nothin' here boss id={id}</p>
+      return <p>There's no Auction here, did you enter the wrong URL?</p>
     } 
     else
     {
+        //calculate how many hours are left of the auction
         const timeLeft = (new Date(auction.deadline) - new Date())/1000/60/60;
 
         //render the auction page without the bidding button if the auction has passed the deadline
@@ -41,7 +43,7 @@ function Auction(props) {
                     </li>)}           
             </>
             );
-        //render the auction page with the bidding button
+        //render the auction page with the bidding button since the auction is still ongoing
         return (
         <>
             <h2>{auction.title}</h2>

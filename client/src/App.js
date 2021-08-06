@@ -17,13 +17,13 @@ function App() {
   const [auctions, setauctions] = useState([]);
   const [auctionCount, setAuctionCount] = useState(0);
   
+  //fetch the data from the database
   useEffect(() => {
     async function getData() {
       const url = `${API_URL}/`;
       const response = await fetch(url);
       const auctions = await response.json();
       setauctions(auctions);
-      
     }
     getData();
   }, [auctionCount]);  
@@ -34,18 +34,19 @@ function App() {
         const resp = await authService.login(username, password);
         console.log("Authentication:", resp.msg);
         setAuctionCount(p => p + 1);
-        alert("Logged In");
+        alert("Succesfully logged in");
       } catch (e) {
         console.log("Login", e);
       }
-      
     }
 
+  //get an auction based in the ID
   function getAuction(id){
     return auctions.find(auction => auction._id === id);
   }
 
-  function addAuction(_title, _description){
+  //post the auction data to the API, but only if you're currently logged in with a valid account
+  function addAuction(_title, _description, _deadline){
     if (authService.getToken() == null){
       alert("You're not logged in! Log in first");
       return 0;
@@ -53,11 +54,11 @@ function App() {
     const data = { 
       title: _title, 
       description: _description,
-      seller: (jwtDecode(authService.getToken()).username)
+      seller: (jwtDecode(authService.getToken()).username),
+      deadline: _deadline
     };
     const auctionData = async () => {
       const url = `${API_URL}/post/create`;
-
       const response = await authService.fetch(url, {
         method: 'POST',
         headers: {
@@ -70,6 +71,7 @@ function App() {
     setAuctionCount(p => p + 1);
   }
 
+  //same as with posting an auction, it adds a bid to the selected auction, but only if there's a valid token
   function addBid(_id, _amount){
     if (authService.getToken() == null){
       alert("You're not logged in! Log in first");
@@ -82,7 +84,6 @@ function App() {
     };
     const auctionData = async () => {
       const url = `${API_URL}/post/bid`;
-
       const response = await authService.fetch(url, {
         method: 'POST',
         headers: {
@@ -95,8 +96,6 @@ function App() {
     setAuctionCount(p => p + 1);
   }
   
-
-
   return (
     <>
       <Link to="/"><h1>Mern Auction Application</h1></Link> 
